@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Guia Interativo fx‑CG100 – Engenharia</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    /*
+     * Estilos principais
+     *
+     * A página utiliza um visual escuro e gradientes para dar
+     * um ar moderno. Todas as cores e tamanhos estão centralizados
+     * em variáveis CSS para facilitar ajustes futuros.
+     */
+    :root {
+      --bg: #020617;
+      --bg-secondary: #0f172a;
+      --bg-card: #111a2e;
+      --accent: #38bdf8;
+      --accent-soft: rgba(56, 189, 248, 0.15);
+      --text-main: #e5e7eb;
+      --text-muted: #9ca3af;
+      --border-soft: rgba(148, 163, 184, 0.4);
+      --border-strong: rgba(148, 163, 184, 0.6);
+      --radius-lg: 20px;
+      --shadow-soft: 0 20px 50px rgba(15, 23, 42, 0.9);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: "Poppins", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      background: radial-gradient(circle at top left, #1d283a 0, var(--bg) 45%, #000 100%);
+      color: var(--text-main);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 16px;
+    }
+
+    .app {
+      width: 100%;
+      max-width: 1280px;
+      background: linear-gradient(145deg, rgba(15, 23, 42, 0.97), rgba(15, 23, 42, 0.92));
+      border-radius: 26px;
+      border: 1px solid var(--border-soft);
+      box-shadow: var(--shadow-soft);
+      padding: 20px;
+      backdrop-filter: blur(18px);
+    }
+
+    .app-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .app-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .badge {
+      font-size: 0.75rem;
+      padding: 2px 10px;
+      border-radius: 999px;
+      background: rgba(34, 197, 94, 0.12);
+      border: 1px solid rgba(34, 197, 94, 0.5);
+      color: #bbf7d0;
+    }
+
+    .subtitle {
+      font-size: 0.80rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+      max-width: 560px;
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .chip {
+      font-size: 0.70rem;
+      padding: 4px 9px;
+      border-radius: 999px;
+      border: 1px solid var(--border-soft);
+      color: var(--text-muted);
+    }
+
+    .chip strong {
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .app-body {
+      display: grid;
+      grid-template-columns: minmax(0, 340px) minmax(0, 1fr);
+      gap: 14px;
+    }
+
+    /* Painel de tópicos à esquerda */
+    .topics-panel {
+      background: radial-gradient(circle at top left, rgba(56, 189, 248, 0.18), rgba(15, 23, 42, 0.98));
+      border-radius: var(--radius-lg);
+      padding: 10px 10px 12px;
+      border: 1px solid var(--border-soft);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .topics-title {
+      font-size: 0.90rem;
+      font-weight: 600;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .topics-title span {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      font-weight: 400;
+    }
+
+    .topics-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 6px;
+      max-height: 420px;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+
+    .topic-button {
+      width: 100%;
+      text-align: left;
+      background: var(--bg);
+      border-radius: 14px;
+      border: 1px solid rgba(148, 163, 184, 0.45);
+      color: var(--text-main);
+      padding: 7px 9px;
+      font-size: 0.78rem;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      transition: all 0.18s ease;
+    }
+
+    .topic-button:hover {
+      background: #0b1120;
+      transform: translateY(-1px);
+      box-shadow: 0 10px 20px rgba(15, 23, 42, 0.8);
+    }
+
+    .topic-button.active {
+      border-color: var(--accent);
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.22), rgba(15, 23, 42, 0.98));
+      box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.5);
+    }
+
+    .topic-name {
+      font-weight: 600;
+      font-size: 0.80rem;
+    }
+
+    .topic-tag {
+      font-size: 0.68rem;
+      color: var(--text-muted);
+    }
+
+    /* Painel de detalhe à direita */
+    .detail-panel {
+      background: radial-gradient(circle at top right, rgba(56, 189, 248, 0.16), rgba(15, 23, 42, 0.98));
+      border-radius: var(--radius-lg);
+      padding: 10px 11px 12px;
+      border: 1px solid var(--border-soft);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .detail-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 8px;
+    }
+
+    .detail-title {
+      font-size: 1rem;
+      font-weight: 600;
+    }
+
+    .detail-mode {
+      font-size: 0.70rem;
+      color: var(--accent);
+      padding: 3px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(56, 189, 248, 0.6);
+      background: rgba(15, 23, 42, 0.8);
+    }
+
+    .detail-description {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    .calculator-visual {
+      position: relative;
+      background: radial-gradient(circle at top, rgba(15, 23, 42, 1), rgba(15, 23, 42, 0.9));
+      border-radius: 16px;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      padding: 8px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.2fr);
+      gap: 8px;
+      align-items: center;
+    }
+
+    .calc-image-wrapper {
+      position: relative;
+      border-radius: 14px;
+      overflow: hidden;
+      background: #020617;
+      border: 1px solid rgba(30, 64, 175, 0.8);
+      min-height: 140px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .calc-image {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      opacity: 0.95;
+    }
+
+    .calc-placeholder {
+      font-size: 0.70rem;
+      color: var(--text-muted);
+      text-align: center;
+      padding: 8px;
+    }
+
+    .calc-hint {
+      position: absolute;
+      bottom: 6px;
+      left: 6px;
+      right: 6px;
+      background: linear-gradient(to right, rgba(15, 23, 42, 0.96), rgba(15, 23, 42, 0.9));
+      padding: 4px 7px;
+      border-radius: 10px;
+      font-size: 0.68rem;
+      color: var(--text-muted);
+      border: 1px solid rgba(148, 163, 184, 0.4);
+    }
+
+    .calc-hint strong {
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .step-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .step-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.72rem;
+      color: var(--text-muted);
+    }
+
+    .step-counter {
+      font-weight: 600;
+      color: var(--accent);
+    }
+
+    .step-badge {
+      font-size: 0.68rem;
+      padding: 2px 7px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+    }
+
+    .step-card {
+      background: rgba(15, 23, 42, 0.96);
+      border-radius: 12px;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      padding: 8px;
+      font-size: 0.78rem;
+      line-height: 1.45;
+      min-height: 72px;
+    }
+
+    .step-card strong {
+      color: #e5e7eb;
+    }
+
+    .step-actions {
+      margin-top: 5px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .step-buttons {
+      display: flex;
+      gap: 6px;
+    }
+
+    .btn-step {
+      font-size: 0.72rem;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      background: #020617;
+      color: var(--text-main);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.16s ease;
+    }
+
+    .btn-step:hover {
+      background: #111827;
+      transform: translateY(-0.5px);
+    }
+
+    .btn-step:disabled {
+      opacity: 0.4;
+      cursor: default;
+      transform: none;
+    }
+
+    .step-tip {
+      font-size: 0.70rem;
+      color: var(--text-muted);
+    }
+
+    .step-tip strong {
+      color: var(--accent);
+    }
+
+    .extra-info {
+      margin-top: 2px;
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      border-radius: 10px;
+      border: 1px dashed rgba(148, 163, 184, 0.5);
+      padding: 5px 7px;
+      background: rgba(15, 23, 42, 0.9);
+    }
+
+    .extra-info span {
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    @media (max-width: 900px) {
+      .app-body {
+        grid-template-columns: 1fr;
+      }
+      .calculator-visual {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .app-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .app {
+        padding: 16px 14px 18px;
+      }
+      .detail-title {
+        font-size: 0.96rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header class="app-header">
+      <div>
+        <div class="app-title">
+          Guia fx-CG100
+          <span class="badge">modo engenharia</span>
+        </div>
+        <p class="subtitle">
+          Escolha uma matéria e veja um passo a passo simples e direto de como fazer a conta na Casio fx-CG100.
+        </p>
+      </div>
+      <div class="chips">
+        <div class="chip"><strong>fx-CG100</strong> · estatística, matrizes, complexos...</div>
+        <div class="chip">feito para estudo e GitHub Pages</div>
+      </div>
+    </header>
+
+    <main class="app-body">
+      <!-- Painel esquerdo: tópicos -->
+      <section class="topics-panel">
+        <div class="topics-title">
+          Conteúdos da calculadora
+          <span>Clique em um para começar</span>
+        </div>
+        <div id="topicsGrid" class="topics-grid">
+          <!-- Botões gerados via JS -->
+        </div>
+      </section>
+
+      <!-- Painel direito: detalhe -->
+      <section class="detail-panel">
+        <div class="detail-header">
+          <div>
+            <div id="detailTitle" class="detail-title">Selecione um tópico à esquerda</div>
+            <p id="detailDescription" class="detail-description">
+              Aqui vai aparecer uma explicação rápida e um passo a passo interativo de como usar a fx-CG100 para cada tipo de conta.
+            </p>
+          </div>
+          <div id="detailMode" class="detail-mode">fx-CG100</div>
+        </div>
+
+        <div class="calculator-visual">
+          <div class="calc-image-wrapper">
+            <!-- Troque o src pelas suas imagens reais -->
+            <img id="calcImage" class="calc-image" src="" alt="Imagem da Casio fx-CG100" style="display:none;">
+            <div id="calcPlaceholder" class="calc-placeholder">
+              Aqui você pode colocar uma foto da sua <strong>fx-CG100</strong> com setas indicando as teclas usadas.
+              <br><br>
+              Salve a imagem na raiz do projeto com o nome sugerido em cada tópico.
+            </div>
+            <div id="calcHint" class="calc-hint">
+              <strong>Dica visual:</strong> escolha um tópico para ver qual tela ou tecla da calculadora usar.
+            </div>
+          </div>
+
+          <div class="step-panel">
+            <div class="step-header">
+              <div class="step-counter" id="stepCounter">Passo 0 de 0</div>
+              <div class="step-badge" id="stepBadge">Nenhum tópico selecionado</div>
+            </div>
+            <div class="step-card" id="stepText">
+              Clique em um dos botões de matéria para carregar o passo a passo de uso da calculadora.
+            </div>
+            <div class="step-actions">
+              <div class="step-buttons">
+                <button class="btn-step" id="btnPrev" disabled>&larr; Anterior</button>
+                <button class="btn-step" id="btnNext" disabled>Próximo &rarr;</button>
+              </div>
+              <div class="step-tip" id="stepTip">
+                Dica: comece por <strong>Desvio padrão</strong> ou <strong>Bhaskara</strong> para pegar o jeito.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="extraInfo" class="extra-info">
+          Escolha um conteúdo para ver atalhos de menus, botões usados e o <span>caminho completo</span> dentro da fx-CG100.
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    // Dados dos tópicos: título, etiqueta, modo, imagem e passos
+    const topics = [
+      {
+        id: "desvio",
+        name: "Desvio padrão (estatística)",
+        tag: "STAT · 1-Variable",
+        mode: "MENU → STAT (6) · 1-VAR",
+        image: "fxcg100-menu-stat.png",
+        hint: "Use uma imagem da tela de MENU com o ícone STAT selecionado e outra da lista com os valores em List1.",
+        description: "Cálculo de média e desvio padrão (amostral e populacional) usando o modo STAT da fx-CG100.",
+        steps: [
+          "Aperte a tecla MENU e escolha a opção STAT (geralmente número 6).",
+          "Selecione 1-Variable (1-Var) para trabalhar com uma lista simples de valores.",
+          "Digite cada valor da amostra na coluna List1, confirmando com EXE a cada número.",
+          "Quando terminar a lista, aperte F2 (CALC) e depois F1 (1-Var) para calcular as estatísticas.",
+          "Leia na tela: x̄ é a média, sx é o desvio padrão amostral e σx é o desvio padrão populacional."
+        ],
+        tip: "Se quiser apagar uma lista inteira, use F6 (mais opções) e CLR para limpar List1."
+      },
+      {
+        id: "bhaskara",
+        name: "Bhaskara / Equação do 2º grau",
+        tag: "EQN · Polynomial",
+        mode: "MENU → EQN → Polynomial → Grau 2",
+        image: "fxcg100-menu-eqn.png",
+        hint: "Mostre a tela do menu Equation (EQN) com a opção Polynomial e o formulário ax²+bx+c.",
+        description: "Resolução de equações quadráticas usando o modo Equation da fx-CG100.",
+        steps: [
+          "Aperte MENU e escolha EQN (Equation).",
+          "Selecione Polynomial e depois o grau 2 (equações do tipo ax² + bx + c = 0).",
+          "Digite o valor de a e aperte EXE, depois o valor de b, EXE, e o valor de c, EXE.",
+          "A calculadora vai mostrar x1 e x2, que são as raízes da equação.",
+          "Anote as raízes e, se quiser conferir, substitua na função usando o modo RUN-MAT."
+        ],
+        tip: "Sempre confira se a equação está na forma ax² + bx + c = 0 antes de digitar os coeficientes."
+      },
+      {
+        id: "func-table",
+        name: "Funções e tabela de valores",
+        tag: "GRAPH / TABLE",
+        mode: "MENU → GRAPH ou TABLE",
+        image: "fxcg100-graph-table.png",
+        hint: "Mostre a tela GRAPH com Y1 preenchido e a tela TABLE com a função gerando valores.",
+        description: "Criação de tabelas de valores e visualização de gráficos para funções de uma variável.",
+        steps: [
+          "Para ver o gráfico, aperte MENU e escolha GRAPH.",
+          "Em Y1 digite a função, por exemplo 2x²+3x-5 (use a tecla X apropriada).",
+          "Aperte F6 (DRAW) para desenhar o gráfico na tela.",
+          "Para gerar tabela, use MENU → TABLE, preencha f(x) com a mesma função e defina início, fim e passo.",
+          "Aperte EXE para ver a tabela com x e f(x) calculados automaticamente."
+        ],
+        tip: "Use o botão TRACE no modo GRAPH para ver valores aproximados da função em pontos específicos."
+      },
+      {
+        id: "log-ln",
+        name: "Logaritmos e ln",
+        tag: "RUN-MAT",
+        mode: "Modo RUN-MAT",
+        image: "fxcg100-log-ln.png",
+        hint: "Use uma imagem com as teclas LOG e LN em destaque no teclado.",
+        description: "Cálculo de logaritmos (base 10, base e e base qualquer) usando LOG e LN.",
+        steps: [
+          "No modo RUN-MAT, para calcular log base 10, pressione LOG, digite o número e aperte EXE.",
+          "Para calcular ln (logaritmo natural), pressione LN, digite o número e aperte EXE.",
+          "Para log de base qualquer, use a função log( , ) da fx-CG100 se disponível: log(base, valor).",
+          "Exemplo: para log base 3 de 81, digite log(3,81) e aperte EXE.",
+          "Use LN também para resolver equações do tipo a·e^(kx) = b, isolando x com ln(b/a)/k."
+        ],
+        tip: "Lembre que ln(e) = 1 e log(10) = 1; use isso para conferir se você digitou certo."
+      },
+      {
+        id: "trig",
+        name: "Trigonometria (sen, cos, tan)",
+        tag: "RUN-MAT · DEG",
+        mode: "MENU → SETUP · Angle: Degree",
+        image: "fxcg100-trig.png",
+        hint: "Mostre a tela de configuração de ângulo em graus e algumas teclas SIN, COS, TAN.",
+        description: "Uso de seno, cosseno e tangente em graus, comum em problemas de força e rampas.",
+        steps: [
+          "Antes de tudo, coloque a calculadora em graus: MENU → System ou SETUP e escolha Angle = Degree.",
+          "No modo RUN-MAT, para calcular sen(37°), pressione SIN, digite 37 e aperte EXE.",
+          "Para cos(60°), pressione COS, digite 60 e aperte EXE.",
+          "Para tan(45°), pressione TAN, digite 45 e aperte EXE.",
+          "Use SHIFT + SIN, COS ou TAN para usar as funções inversas (arcsin, arccos, arctan)."
+        ],
+        tip: "Se o resultado parecer estranho, confira se a calculadora está em DEG (graus) e não em RAD (radianos)."
+      },
+      {
+        id: "complex",
+        name: "Números complexos",
+        tag: "RUN-MAT · COMPLEX",
+        mode: "Modo COMP (complexos)",
+        image: "fxcg100-complex.png",
+        hint: "Mostre a tecla do i e um exemplo de número complexo digitado na tela.",
+        description: "Somar, multiplicar e encontrar o módulo de números complexos, útil em circuitos AC.",
+        steps: [
+          "No modo RUN-MAT, use a tecla i (geralmente SHIFT + uma tecla marcada) para digitar números complexos.",
+          "Para somar (3+4i) e (2−i), digite (3+4i)+(2−i) e aperte EXE.",
+          "Para multiplicar (2+3i)(4−i), digite (2+3i)*(4−i) e aperte EXE.",
+          "Para o módulo de 5−12i, use a função Abs: Abs(5−12i).",
+          "Use Arg(z) para descobrir o ângulo de fase de uma impedância Z em forma retangular."
+        ],
+        tip: "Ative o modo de exibição em forma retangular (a+bi) para facilitar a interpretação em circuitos."
+      },
+      {
+        id: "sistemas",
+        name: "Sistemas lineares 3×3 / 4×4 / 5×5",
+        tag: "MATRIX · RREF",
+        mode: "MENU → MATRIX → RREF",
+        image: "fxcg100-matrix-rref.png",
+        hint: "Mostre a tela de edição de MatA e a opção RREF no menu CALC da matriz.",
+        description: "Resolução de sistemas lineares usando a matriz aumentada e a função RREF.",
+        steps: [
+          "Aperte MENU e escolha MATRIX.",
+          "Em EDIT, selecione MatA e defina o tamanho: por exemplo, 3×4 para um sistema 3×3 (3 incógnitas + 1 coluna de resultados).",
+          "Digite linha por linha os coeficientes e o termo independente, exatamente como aparecem no sistema.",
+          "Volte ao menu MATRIX, vá em CALC e selecione RREF.",
+          "Escolha MatA: a matriz reduzida vai mostrar a solução do sistema em forma de linha: 1 0 0 | x, 0 1 0 | y, 0 0 1 | z."
+        ],
+        tip: "Use 4×5 para sistemas com 4 incógnitas e 5×6 para sistemas com 5 incógnitas."
+      },
+      {
+        id: "determinante",
+        name: "Determinante 4×4",
+        tag: "MATRIX · DET",
+        mode: "MENU → MATRIX → DET",
+        image: "fxcg100-matrix-det.png",
+        hint: "Mostre a matriz 4×4 digitada e a opção DET(MatA) no menu CALC.",
+        description: "Cálculo de determinantes de matrizes 4×4 usando o menu MATRIX.",
+        steps: [
+        
