@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Guia fx-CG100 – Engenharia</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app">
+    <header class="app-header">
+      <div class="title-block">
+        <div class="app-title">
+          Guia fx-CG100
+          <span class="badge">uso em engenharia</span>
+        </div>
+        <p class="subtitle">
+          Clique em uma matéria à esquerda. À direita você vê: enunciado de exemplo, modo da calculadora e passo a passo
+          de como fazer na fx-CG100.
+        </p>
+      </div>
+      <div class="chips">
+        <div class="chip"><strong>Casio fx-CG100</strong> · estatística, matrizes, complexos, integrais…</div>
+        <div class="chip">feito para jovens & GitHub Pages (apenas arquivos na raiz)</div>
+      </div>
+    </header>
+
+    <main class="layout">
+      <!-- Lado esquerdo: lista de matérias -->
+      <section class="sidebar">
+        <div class="sidebar-title">
+          Matérias disponíveis
+          <span>toque para aprender</span>
+        </div>
+        <div id="topicsList" class="topics-list"></div>
+      </section>
+
+      <!-- Lado direito: conteúdo da matéria -->
+      <section class="content">
+        <div class="content-header">
+          <div>
+            <div id="contentTitle" class="content-title">Selecione uma matéria na esquerda</div>
+            <p id="contentDescription" class="content-description">
+              Aqui aparece o resumo da matéria, o modo da calculadora que você deve entrar, um exemplo típico de questão
+              de engenharia e o passo a passo de teclas que você faria na fx-CG100 em casa.
+            </p>
+          </div>
+          <div id="contentMode" class="content-mode">fx-CG100</div>
+        </div>
+
+        <div id="exampleBlock" class="example-block">
+          <strong>Exemplo:</strong> depois de escolher uma matéria, você verá um enunciado de questão e, logo abaixo,
+          como resolver usando a calculadora.
+        </div>
+
+        <div id="stepsTitle" class="steps-title">Passo a passo na calculadora</div>
+        <ol id="stepsList" class="steps-list">
+          <li>Escolha um dos botões de matéria à esquerda.</li>
+          <li>Leia o resumo da matéria e o exemplo de questão.</li>
+          <li>Siga os passos numerados em ordem na sua fx-CG100 real.</li>
+        </ol>
+
+        <div id="tipBlock" class="tip-block">
+          <strong>Dica:</strong> comece praticando Desvio padrão e Bhaskara, depois avance para matrizes, integrais e
+          números complexos.
+        </div>
+
+        <div id="hintBlock" class="hint-block">
+          Para deixar o site mais bonito, você pode um dia adicionar imagens da sua calculadora (menus, teclas)
+          na raiz do projeto. Mas não é obrigatório para o site funcionar.
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
