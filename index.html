@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Guia fx-CG100 – Engenharia</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #020617;
+      --bg-card: #020617;
+      --accent: #38bdf8;
+      --text-main: #e5e7eb;
+      --text-muted: #9ca3af;
+      --border-soft: rgba(148,163,184,0.45);
+      --radius-lg: 18px;
+      --shadow-soft: 0 20px 40px rgba(15,23,42,0.9);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: "Poppins", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      background: radial-gradient(circle at top left, #1f2937 0, #020617 45%, #000 100%);
+      color: var(--text-main);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 16px;
+    }
+
+    .app {
+      width: 100%;
+      max-width: 1200px;
+      background: linear-gradient(135deg, #020617, #020617);
+      border-radius: 24px;
+      border: 1px solid var(--border-soft);
+      box-shadow: var(--shadow-soft);
+      padding: 18px;
+    }
+
+    .app-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .title-block {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .app-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .badge {
+      font-size: 0.75rem;
+      padding: 2px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(34,197,94,0.65);
+      background: rgba(22,163,74,0.12);
+      color: #bbf7d0;
+    }
+
+    .subtitle {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      max-width: 560px;
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .chip {
+      font-size: 0.72rem;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--border-soft);
+      color: var(--text-muted);
+    }
+
+    .chip strong {
+      color: var(--accent);
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 320px) minmax(0, 1fr);
+      gap: 14px;
+    }
+
+    /* Lateral esquerda – lista de matérias */
+    .sidebar {
+      background: var(--bg-card);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-soft);
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .sidebar-title {
+      font-size: 0.9rem;
+      font-weight: 600;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .sidebar-title span {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      font-weight: 400;
+    }
+
+    .topics-list {
+      margin-top: 2px;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 6px;
+      max-height: 430px;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+
+    .topic-btn {
+      width: 100%;
+      text-align: left;
+      border-radius: 14px;
+      border: 1px solid var(--border-soft);
+      background: #020617;
+      color: var(--text-main);
+      padding: 7px 9px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      transition: all 0.16s ease;
+    }
+
+    .topic-btn:hover {
+      background: #0b1120;
+      transform: translateY(-1px);
+      box-shadow: 0 8px 16px rgba(15,23,42,0.9);
+    }
+
+    .topic-btn.active {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px rgba(56,189,248,0.4);
+      background: radial-gradient(circle at top left, rgba(56,189,248,0.18), #020617);
+    }
+
+    .topic-name {
+      font-weight: 600;
+    }
+
+    .topic-tag {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+    }
+
+    /* Painel direito – conteúdo */
+    .content {
+      background: var(--bg-card);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-soft);
+      padding: 10px 11px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .content-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 8px;
+    }
+
+    .content-title {
+      font-size: 1rem;
+      font-weight: 600;
+    }
+
+    .content-mode {
+      font-size: 0.7rem;
+      border-radius: 999px;
+      border: 1px solid rgba(56,189,248,0.65);
+      padding: 3px 8px;
+      background: rgba(15,23,42,0.9);
+      color: var(--accent);
+      white-space: nowrap;
+    }
+
+    .content-description {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .example-block {
+      margin-top: 4px;
+      padding: 6px 8px;
+      border-radius: 12px;
+      border: 1px dashed var(--border-soft);
+      background: #020617;
+      font-size: 0.78rem;
+      color: var(--text-main);
+    }
+
+    .example-block strong {
+      color: var(--accent);
+    }
+
+    .steps-title {
+      margin-top: 6px;
+      font-size: 0.82rem;
+      font-weight: 600;
+    }
+
+    .steps-list {
+      margin-top: 4px;
+      font-size: 0.8rem;
+      line-height: 1.45;
+      padding-left: 18px;
+    }
+
+    .steps-list li {
+      margin-bottom: 4px;
+    }
+
+    .tip-block {
+      margin-top: 6px;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      border-radius: 10px;
+      border: 1px dashed var(--border-soft);
+      padding: 5px 7px;
+    }
+
+    .tip-block strong {
+      color: var(--accent);
+    }
+
+    .hint-block {
+      margin-top: 4px;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .hint-block strong {
+      color: var(--accent);
+    }
+
+    @media (max-width: 900px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .app {
+        padding: 14px 12px 16px;
+      }
+      .app-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .app-title {
+        font-size: 1.25rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header class="app-header">
+      <div class="title-block">
+        <div class="app-title">
+          Guia fx-CG100
+          <span class="badge">uso em engenharia</span>
+        </div>
+        <p class="subtitle">
+          Clique em uma matéria à esquerda. À direita você vê: enunciado de exemplo, modo da calculadora e passo a passo
+          de como fazer na fx-CG100.
+        </p>
+      </div>
+      <div class="chips">
+        <div class="chip"><strong>Casio fx-CG100</strong> · estatística, matrizes, complexos, integrais…</div>
+        <div class="chip">feito para jovens & GitHub Pages (apenas index.html)</div>
+      </div>
+    </header>
+
+    <main class="layout">
+      <!-- Lado esquerdo: lista de matérias -->
+      <section class="sidebar">
+        <div class="sidebar-title">
+          Matérias disponíveis
+          <span>toque para aprender</span>
+        </div>
+        <div id="topicsList" class="topics-list"></div>
+      </section>
+
+      <!-- Lado direito: conteúdo da matéria -->
+      <section class="content">
+        <div class="content-header">
+          <div>
+            <div id="contentTitle" class="content-title">Selecione uma matéria na esquerda</div>
+            <p id="contentDescription" class="content-description">
+              Aqui aparece o resumo da matéria, o modo da calculadora que você deve entrar, um exemplo típico de questão
+              de engenharia e o passo a passo de teclas que você faria na fx-CG100 em casa.
+            </p>
+          </div>
+          <div id="contentMode" class="content-mode">fx-CG100</div>
+        </div>
+
+        <div id="exampleBlock" class="example-block">
+          <strong>Exemplo:</strong> depois de escolher uma matéria, você verá um enunciado de questão e, logo abaixo,
+          como resolver usando a calculadora.
+        </div>
+
+        <div id="stepsTitle" class="steps-title">Passo a passo na calculadora</div>
+        <ol id="stepsList" class="steps-list">
+          <li>Escolha um dos botões de matéria à esquerda.</li>
+          <li>Leia o resumo da matéria e o exemplo de questão.</li>
+          <li>Siga os passos numerados em ordem na sua fx-CG100 real.</li>
+        </ol>
+
+        <div id="tipBlock" class="tip-block">
+          <strong>Dica:</strong> comece praticando Desvio padrão e Bhaskara, depois avance para matrizes, integrais e
+          números complexos.
+        </div>
+
+        <div id="hintBlock" class="hint-block">
+          Para deixar o site mais bonito, você pode salvar imagens da sua calculadora (menus, teclas) com os nomes
+          sugeridos no código (por exemplo: <strong>fxcg100-menu-stat.png</strong>) na raiz do projeto. Elas não são
+          obrigatórias para o site funcionar.
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    // Lista de matérias (tópicos) e seus dados
+    var topics = [
+      {
+        id: "desvio",
+        name: "Desvio padrão (estatística)",
+        tag: "STAT · 1-Variable",
+        mode: "MENU → STAT (6) → 1-Variable (1-Var)",
+        description: "Cálculo de média e desvio padrão (amostral e populacional) a partir de uma lista de medidas.",
+        example: "Um eixo foi medido 6 vezes e os diâmetros em mm foram: 39,98; 40,02; 40,01; 39,99; 40,03; 40,00. Calcule a média e o desvio padrão amostral usando a fx-CG100.",
+        steps: [
+          "Ligar a calculadora com AC/ON.",
+          "Apertar MENU e escolher a opção STAT (normalmente usando o número 6 ou as setas).",
+          "Dentro de STAT, escolher 1-Variable (1-Var), pois temos apenas uma lista de dados.",
+          "Na coluna List1, digitar o primeiro valor (39.98) e apertar EXE. Repetir para todos os valores: 40.02, 40.01, 39.99, 40.03 e 40.00, sempre confirmando com EXE.",
+          "Após terminar a lista, pressionar F2 (CALC) e depois escolher 1-Var para calcular as estatísticas.",
+          "Na tela de resultados, observar: x̄ (média), sx (desvio padrão amostral) e σx (desvio padrão populacional). Usar sx para responder questões de amostra."
+        ],
+        tip: "Se quiser limpar uma lista inteira antes de digitar novos dados, use as opções de CLR (clear) dentro do menu STAT."
+      },
+      {
+        id: "bhaskara",
+        name: "Bhaskara / Equação do 2º grau",
+        tag: "EQN · Polynomial grau 2",
+        mode: "MENU → EQN → Polynomial → grau 2",
+        description: "Resolução de equações quadráticas do tipo ax² + bx + c = 0 usando o modo Equation (EQN).",
+        example: "A altura de um projétil é dada por h(t) = -4,9t² + 30t + 1,5. Encontre os instantes em que o projétil está no chão (h=0) usando a fx-CG100.",
+        steps: [
+          "Apertar MENU e selecionar o ícone EQN (Equation).",
+          "Dentro de EQN, escolher Polynomial e depois grau 2 (equações do segundo grau).",
+          "Identificar a, b e c na função. No exemplo: a = -4,9 ; b = 30 ; c = 1,5 (equação -4,9t² + 30t + 1,5 = 0).",
+          "Digitar o valor de a (−4.9) no campo a e apertar EXE. Em seguida, digitar 30 para b e 1.5 para c, confirmando com EXE em cada um.",
+          "A calculadora mostra as raízes x1 e x2. Uma delas pode ser negativa (tempo físico negativo, que geralmente é descartado).",
+          "Usar a raiz positiva como resposta para o tempo físico em que o projétil volta ao chão."
+        ],
+        tip: "Sempre coloque a equação na forma ax² + bx + c = 0 antes de jogar os coeficientes na calculadora."
+      },
+      {
+        id: "func",
+        name: "Funções, gráfico e tabela",
+        tag: "GRAPH / TABLE",
+        mode: "MENU → GRAPH ou MENU → TABLE",
+        description: "Digitar funções, ver o gráfico e gerar tabela de valores para análise de comportamento.",
+        example: "A corrente em um circuito é dada por I(t) = 5·e^(−0,2t). Use a tabela da calculadora para encontrar I(0), I(5) e I(10).",
+        steps: [
+          "Para ver o gráfico, apertar MENU e selecionar GRAPH.",
+          "No campo Y1, digitar a função desejada (por exemplo, 2x² + 3x − 5), usando a tecla X apropriada para a variável.",
+          "Apertar F6 (DRAW) para desenhar o gráfico da função na tela.",
+          "Para gerar tabela, apertar MENU e escolher TABLE.",
+          "Em f(x), digitar a mesma função de interesse (por exemplo, 2x² + 3x − 5). Definir o valor inicial (Start), o valor final (End) e o passo (Step), por exemplo: 0, 10 e 1.",
+          "Apertar EXE para ver a tabela com uma coluna de x e outra com f(x) calculada automaticamente para cada valor."
+        ],
+        tip: "Use a tabela para encontrar rapidamente valores numéricos de funções que aparecerem em exercícios de engenharia."
+      },
+      {
+        id: "logln",
+        name: "Logaritmos e ln",
+        tag: "RUN-MAT · LOG / LN",
+        mode: "Modo RUN-MAT",
+        description: "Cálculo de log base 10, log natural (ln) e log em base qualquer para equações exponenciais.",
+        example: "A tensão em um capacitor é v(t) = 12(1 − e^(−t/5)). Em que tempo a tensão atinge 9 V? Use ln na fx-CG100.",
+        steps: [
+          "Isolar a parte exponencial no papel: 12(1 − e^(−t/5)) = 9 → 1 − e^(−t/5) = 9/12 = 0,75 → e^(−t/5) = 0,25.",
+          "No modo RUN-MAT, usar a expressão t = −5·ln(0,25).",
+          "Na calculadora, digitar:  -5  ×  LN(0.25).",
+          "Apertar EXE para calcular o resultado numérico de t.",
+          "O valor obtido é o tempo necessário para a tensão atingir 9 V.",
+          "Esse tipo de conta é típico em problemas de circuitos RC, decaimento, crescimento e meia-vida."
+        ],
+        tip: "Lembre que ln(e) = 1 e que ln de valores menores que 1 é negativo (o que costuma aparecer em tempos de decaimento)."
+      },
+      {
+        id: "trig",
+        name: "Trigonometria (sen, cos, tan)",
+        tag: "RUN-MAT · DEG",
+        mode: "SETUP → Angle: Degree",
+        description: "Uso de seno, cosseno e tangente em graus para decompor forças, rampas e outros problemas.",
+        example: "Uma força de 500 N forma 30° com a horizontal. Calcule as componentes horizontal (Fx) e vertical (Fy) usando a fx-CG100.",
+        steps: [
+          "Conferir o modo de ângulo: ir em SETUP ou System e garantir que está em DEG (graus).",
+          "Para Fx = F·cos(θ), no modo RUN-MAT digitar: 500 × COS(30) e apertar EXE.",
+          "Guardar o valor obtido como a componente horizontal (aprox. 433 N).",
+          "Para Fy = F·sen(θ), digitar: 500 × SIN(30) e apertar EXE.",
+          "Guardar o resultado como componente vertical (aprox. 250 N).",
+          "Usar esse tipo de decomposição em problemas de planos inclinados, estruturas e forças em cabos."
+        ],
+        tip: "Se o resultado não fizer sentido (muito grande ou muito pequeno), confira se a calculadora não está em RAD (radianos)."
+      },
+      {
+        id: "complexos",
+        name: "Números complexos e módulo",
+        tag: "RUN-MAT · COMPLEX",
+        mode: "Modo complexo (a + bi)",
+        description: "Somar, multiplicar e encontrar o módulo de números complexos, usados em impedância em corrente alternada.",
+        example: "Uma impedância é Z = 5 + j30 Ω. Calcule o módulo |Z| usando a fx-CG100.",
+        steps: [
+          "No modo RUN-MAT, digitar 5 + 30i (usando a tecla i, normalmente SHIFT + uma tecla indicada no teclado).",
+          "Para obter o módulo, usar a função Abs( ). Digitar Abs(5+30i) ou aplicar Abs à resposta (Ans).",
+          "Apertar EXE para ver o valor numérico do módulo |Z|.",
+          "No exemplo, o resultado esperado é √(5² + 30²) ≈ 30,41 Ω.",
+          "Interpretar |Z| como a magnitude da impedância equivalente do circuito.",
+          "Em problemas de engenharia elétrica, combinar módulo e ângulo (Arg) ajuda a trabalhar com fasores."
+        ],
+        tip: "Trabalhe sempre no modo de exibição a + bi quando quiser ler parte real (resistência) e imaginária (reatância)."
+      },
+      {
+        id: "sistemas",
+        name: "Sistemas lineares (RREF)",
+        tag: "MATRIX · RREF",
+        mode: "MENU → MATRIX → RREF",
+        description: "Resolução de sistemas lineares de 3, 4 ou 5 equações via matriz aumentada e transformação RREF.",
+        example: "Resolver o sistema 3×3: 2x + y − z = 5 ; −x + 3y + 2z = 4 ; 3x − y + z = 2 usando a fx-CG100.",
+        steps: [
+          "Apertar MENU e selecionar MATRIX.",
+          "Em EDIT, escolher MatA e definir o tamanho da matriz como 3×4 (3 linhas, 4 colunas).",
+          "Preencher MatA com a matriz aumentada do sistema. Exemplo: primeira linha 2, 1, −1, 5; segunda linha −1, 3, 2, 4; terceira linha 3, −1, 1, 2 (confirmando com EXE a cada número).",
+          "Voltar ao menu MATRIX e entrar em CALC.",
+          "Escolher a opção RREF (forma reduzida por linhas).",
+          "Aplicar RREF à MatA: a calculadora mostra a matriz na forma [1 0 0 | x ; 0 1 0 | y ; 0 0 1 | z], de onde se lê diretamente a solução do sistema."
+        ],
+        tip: "Para sistemas 4×4 use MatA 4×5; para 5×5 use 5×6 (4 ou 5 incógnitas + 1 coluna de resultados)."
+      },
+      {
+        id: "det",
+        name: "Determinante 4×4",
+        tag: "MATRIX · DET",
+        mode: "MENU → MATRIX → DET",
+        description: "Cálculo do determinante de matrizes quadradas, útil em análises de rigidez, transformações e checagem de sistemas.",
+        example: "Calcule o determinante de uma matriz 4×4 A usada em um modelo de rigidez simplificado (valores genéricos).",
+        steps: [
+          "Apertar MENU e selecionar MATRIX.",
+          "Em EDIT, escolher MatA e definir o tamanho como 4×4.",
+          "Digitar os elementos da matriz linha por linha, confirmando cada valor com EXE.",
+          "Voltar ao menu MATRIX e entrar em CALC.",
+          "Escolher a opção DET (determinante).",
+          "Selecionar MatA e apertar EXE: a calculadora retorna o valor do determinante de A."
+        ],
+        tip: "Determinante zero normalmente indica sistema singular (sem solução única); determinante diferente de zero indica sistema invertível."
+      },
+      {
+        id: "integral",
+        name: "Integral definida",
+        tag: "RUN-MAT · ∫",
+        mode: "SHIFT → CALC → ∫",
+        description: "Cálculo de integrais definidas para trabalho, área sob a curva, carga acumulada, etc.",
+        example: "Uma força varia com a posição F(x) = 3x² − 4x + 1. Calcule o trabalho realizado de x = 1 até x = 5 usando a integral definida.",
+        steps: [
+          "No modo RUN-MAT, pressionar SHIFT e depois CALC para abrir o menu de cálculos especiais.",
+          "Escolher a opção de integral definida (∫).",
+          "No campo da função, digitar 3x^2 − 4x + 1, usando a tecla de potência e a variável x.",
+          "Definir a variável de integração (geralmente x) e indicar o limite inferior (1) e o superior (5).",
+          "Confirmar a configuração da integral e apertar EXE.",
+          "A calculadora fornece o valor numérico da integral, que corresponde ao trabalho (dentro das unidades do problema)."
+        ],
+        tip: "Você pode usar o mesmo procedimento para calcular área sob curvas, carga elétrica acumulada ao longo do tempo, etc."
+      },
+      {
+        id: "derivada",
+        name: "Derivada: máximo/mínimo (gráfico)",
+        tag: "GRAPH · G-Solv",
+        mode: "MENU → GRAPH → G-Solv → MAX / MIN",
+        description: "Uso do gráfico da função e da ferramenta G-Solv para localizar máximos e mínimos locais.",
+        example: "A posição de uma partícula é s(t) = t³ − 6t² + 9t + 2. Use o gráfico na fx-CG100 para encontrar onde a função tem máximo e mínimo locais.",
+        steps: [
+          "Apertar MENU e selecionar GRAPH.",
+          "Em Y1, digitar a função s(t) (usando x como variável se o modo estive
